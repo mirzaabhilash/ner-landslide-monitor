@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import joblib
 import pandas as pd
@@ -32,13 +32,22 @@ print("========================================")
 
 @app.route("/", methods=["GET"])
 def home():
+    return send_from_directory(".", "index.html")
+
+
+@app.route("/script.js")
+def script():
+    return send_from_directory(".", "script.js")
+
+
+@app.route("/api/status", methods=["GET"])
+def api_status():
     return jsonify({
-        "status": "online",
         "message": "Northeast India Landslide ML API is running",
         "model": "Random Forest",
-        "model_file": MODEL_PATH
+        "model_file": "landslide_model.joblib",
+        "status": "online"
     })
-
 
 # =====================================================
 # PREDICTION API
